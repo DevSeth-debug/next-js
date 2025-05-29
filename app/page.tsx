@@ -32,6 +32,7 @@ import {
 import ThemeSettingsPanel from "@/components/theme-settings-panel" // Import ThemeSettingsPanel with correct path
 
 import { useTheme } from "next-themes"
+import Link from "next/link"
 
 export default function Dashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState("Last 7 days")
@@ -226,8 +227,11 @@ export default function Dashboard() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="dark:bg-gray-800 dark:border-gray-700">
-                  <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
-                    Profile
+                  <DropdownMenuItem
+                    asChild
+                    className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
+                  >
+                    <Link href="/profile">Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
                     Settings
