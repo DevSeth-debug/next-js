@@ -4,15 +4,15 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Search, Bell, ChevronDown, Menu, Settings } from "lucide-react"
 import Link from "next/link"
+import { Breadcrumb } from "./breadcrumb"
 
 interface HeaderProps {
-  title?: string
   onThemeSettingsOpen?: () => void
   onSidebarToggle?: () => void
   isSidebarOpen?: boolean
 }
 
-export function Header({ title = "Dashboard #1", onThemeSettingsOpen, onSidebarToggle, isSidebarOpen }: HeaderProps) {
+export function Header({ onThemeSettingsOpen, onSidebarToggle, isSidebarOpen }: HeaderProps) {
   return (
     <header className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-6 py-4 transition-colors duration-300">
       <div className="flex items-center justify-between">
@@ -28,7 +28,7 @@ export function Header({ title = "Dashboard #1", onThemeSettingsOpen, onSidebarT
           >
             <Menu className="w-5 h-5" />
           </Button>
-          <span className="text-sm text-gray-500 dark:text-gray-400">{title}</span>
+          <Breadcrumb />
         </div>
 
         <div className="flex items-center gap-4">
