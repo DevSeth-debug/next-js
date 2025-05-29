@@ -1,0 +1,313 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
+
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 142.1 76.2% 36.3%;
+
+    --radius: 0.5rem;
+
+    /* Animation variables */
+    --animation-duration-fast: 150ms;
+    --animation-duration-normal: 300ms;
+    --animation-duration-slow: 500ms;
+    --animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 144.9 80.4% 10%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 142.1 76.2% 36.3%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Animation Control System */
+:root {
+  --enable-animations: 1;
+}
+
+.animations-enabled {
+  --enable-animations: 1;
+}
+
+.animations-disabled {
+  --enable-animations: 0;
+}
+
+/* Global transition styles */
+.animate-transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
+    transform, filter, backdrop-filter;
+  transition-timing-function: var(--animation-timing-function);
+  transition-duration: calc(var(--animation-duration-normal) * var(--enable-animations));
+}
+
+.animate-transition-fast {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
+    transform, filter, backdrop-filter;
+  transition-timing-function: var(--animation-timing-function);
+  transition-duration: calc(var(--animation-duration-fast) * var(--enable-animations));
+}
+
+.animate-transition-slow {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
+    transform, filter, backdrop-filter;
+  transition-timing-function: var(--animation-timing-function);
+  transition-duration: calc(var(--animation-duration-slow) * var(--enable-animations));
+}
+
+/* Animation Toggle Component Styling */
+.animation-toggle {
+  @apply relative inline-flex h-6 w-11 items-center rounded-full bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+}
+
+.animation-toggle[data-state="checked"] {
+  @apply bg-primary;
+}
+
+.animation-toggle[data-state="unchecked"] {
+  @apply bg-muted;
+}
+
+.animation-toggle-thumb {
+  @apply pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform;
+  transform: translateX(var(--thumb-position));
+}
+
+.animation-toggle[data-state="checked"] .animation-toggle-thumb {
+  --thumb-position: 1.25rem;
+}
+
+.animation-toggle[data-state="unchecked"] .animation-toggle-thumb {
+  --thumb-position: 0.125rem;
+}
+
+/* Animation Toggle Label */
+.animation-toggle-label {
+  @apply flex items-center gap-2 text-sm font-medium;
+}
+
+/* Animation Settings Section */
+.animation-settings {
+  @apply space-y-4 p-4 border rounded-lg bg-card;
+}
+
+.animation-settings-header {
+  @apply flex items-center justify-between;
+}
+
+.animation-settings-title {
+  @apply text-lg font-semibold;
+}
+
+.animation-settings-description {
+  @apply text-sm text-muted-foreground;
+}
+
+/* Animation examples */
+.animation-example {
+  @apply p-4 border rounded-lg bg-card;
+}
+
+.animation-example-item {
+  @apply flex items-center justify-center h-16 w-full rounded-md bg-muted;
+}
+
+.pulse-animation {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-play-state: running;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.bounce-animation {
+  animation: bounce 1s infinite;
+  animation-play-state: running;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.spin-animation {
+  animation: spin 1.5s linear infinite;
+  animation-play-state: running;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Theme Settings Panel Animation */
+.theme-settings-panel {
+  @apply fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l bg-background/95 backdrop-blur-sm shadow-lg transform transition-all duration-300 ease-in-out;
+}
+
+.theme-settings-panel[data-state="open"] {
+  transform: translateX(0);
+}
+
+.theme-settings-panel[data-state="closed"] {
+  transform: translateX(100%);
+}
+
+/* Animation will only play when animations are enabled */
+.animations-enabled .theme-settings-panel {
+  transition-duration: var(--animation-duration-normal);
+}
+
+.animations-disabled .theme-settings-panel {
+  transition-duration: 0ms;
+}
+
+/* Theme Settings Panel Backdrop */
+.theme-settings-backdrop {
+  @apply fixed inset-0 z-40 bg-background/80 backdrop-blur-sm transition-all duration-300;
+}
+
+.theme-settings-backdrop[data-state="open"] {
+  opacity: 1;
+}
+
+.theme-settings-backdrop[data-state="closed"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Animation will only play when animations are enabled */
+.animations-enabled .theme-settings-backdrop {
+  transition-duration: var(--animation-duration-normal);
+}
+
+.animations-disabled .theme-settings-backdrop {
+  transition-duration: 0ms;
+}
+
+/* Hover animations */
+.hover-scale {
+  @apply transition-transform duration-200;
+}
+
+.animations-enabled .hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Card hover effects */
+.card-hover {
+  @apply transition-shadow duration-200;
+}
+
+.animations-enabled .card-hover:hover {
+  @apply shadow-md;
+}
+
+/* Button animations */
+.btn-animation {
+  @apply transition-all duration-200;
+}
+
+.animations-enabled .btn-animation:active {
+  transform: scale(0.95);
+}
+
+/* Page transitions */
+.page-transition {
+  @apply transition-opacity duration-300;
+}
+
+.animations-enabled .page-transition-enter {
+  opacity: 0;
+}
+
+.animations-enabled .page-transition-enter-active {
+  opacity: 1;
+}
+
+.animations-enabled .page-transition-exit {
+  opacity: 1;
+}
+
+.animations-enabled .page-transition-exit-active {
+  opacity: 0;
+}
