@@ -5,28 +5,28 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Download, ChevronDown } from "lucide-react"
 
-import { Sidebar } from "@/components/layout/sidebar"
-import { Header } from "@/components/layout/header"
+import { ProfileSidebar } from "@/components/profile/profile-sidebar"
+import { ProfileHeader } from "@/components/profile/profile-header"
 import { MetricsGrid } from "@/components/dashboard/metrics-grid"
 import { StatisticsChart } from "@/components/dashboard/charts/statistics-chart"
 import { AnalyticsChart } from "@/components/dashboard/charts/analytics-chart"
 import { SalesChart } from "@/components/dashboard/charts/sales-chart"
 import { TransactionsList } from "@/components/dashboard/transactions-list"
-import { OrdersTable } from "@/components/dashboard/orders-table"
 import ThemeSettingsPanel from "@/components/theme-settings-panel"
 import { useThemeSettings } from "@/hooks/use-theme-settings"
 
-export default function Dashboard() {
+export default function ProfilePage() {
   const [selectedPeriod, setSelectedPeriod] = useState("Last 7 days")
+  const [activeTab, setActiveTab] = useState("Settings")
   const { showThemeSettings, currentTheme, openThemeSettings, closeThemeSettings, handleThemeChange } =
     useThemeSettings()
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <Sidebar />
+      <ProfileSidebar />
 
       <div className="flex-1 flex flex-col">
-        <Header onThemeSettingsOpen={openThemeSettings} />
+        <ProfileHeader activeTab={activeTab} onTabChange={setActiveTab} onThemeSettingsOpen={openThemeSettings} />
 
         <main className="flex-1 p-6 overflow-auto bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
           <div className="flex items-center justify-between mb-6">
@@ -74,18 +74,10 @@ export default function Dashboard() {
             <AnalyticsChart />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <SalesChart />
-            <div className="lg:col-span-2 space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-6">
-                  <TransactionsList />
-                </div>
-              </div>
-            </div>
+            <TransactionsList />
           </div>
-
-          <OrdersTable />
         </main>
       </div>
 
