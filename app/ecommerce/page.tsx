@@ -11,6 +11,7 @@ import { AppShell } from "@/components/layout/app-shell"
 import { ProductsTable } from "@/components/ecommerce/products-table"
 import { Pagination } from "@/components/ecommerce/pagination"
 import { AdvancedFilters } from "@/components/ecommerce/advanced-filters"
+import { ProductsGrid } from "@/components/ecommerce/products-grid"
 
 const tabs = [
   { id: "all", label: "All", count: 283, active: true },
@@ -134,8 +135,8 @@ export default function EcommercePage() {
           </div>
         </div>
 
-        {/* Products Table */}
-        <ProductsTable />
+        {/* Products Display */}
+        {viewMode === "list" ? <ProductsTable /> : <ProductsGrid />}
 
         {/* Pagination */}
         <Pagination
