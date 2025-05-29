@@ -9,7 +9,20 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { X, Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, AlignJustify, Upload } from "lucide-react"
+import {
+  X,
+  Bold,
+  Italic,
+  Underline,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  Upload,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+} from "lucide-react"
 
 interface Product {
   id: string
@@ -277,12 +290,12 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
 
             {/* Images Tab */}
             <TabsContent value="images" className="mt-0 space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Product Images</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Images</h2>
 
               {/* Upload Area */}
-              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-12 text-center">
                 <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
+                <p className="text-gray-600 dark:text-gray-400">
                   Drag and Drop or{" "}
                   <label className="text-green-600 cursor-pointer hover:underline">
                     Browse
@@ -290,17 +303,52 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
                   </label>{" "}
                   to upload
                 </p>
-                <p className="text-sm text-gray-500">Recommended size: 800x800px</p>
               </div>
 
-              {/* Image Grid */}
-              <div className="grid grid-cols-4 gap-4">
-                {Array.from({ length: 8 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-600 flex items-center justify-center"
-                  >
-                    <Upload className="w-8 h-8 text-gray-300" />
+              {/* Images Table */}
+              <div className="space-y-4">
+                <div className="grid grid-cols-4 gap-4 text-sm text-gray-500 dark:text-gray-400 font-medium">
+                  <span>Image</span>
+                  <span>Position</span>
+                  <span>Cover</span>
+                  <span></span>
+                </div>
+
+                {[1, 2, 3].map((index) => (
+                  <div key={index} className="grid grid-cols-4 gap-4 items-center p-4 border rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 grid grid-cols-2 gap-0.5">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                      </div>
+                      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <span className="text-gray-900 dark:text-white">{index}</span>
+                    <div className="flex items-center">
+                      {index === 1 ? (
+                        <div className="w-5 h-5 bg-green-500 rounded flex items-center justify-center">
+                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <div className="w-5 h-5 border-2 border-gray-300 rounded"></div>
+                      )}
+                    </div>
+                    <Button variant="ghost" size="icon" className="w-8 h-8 text-gray-400 hover:text-red-500">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -310,42 +358,67 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
             <TabsContent value="pricing" className="mt-0 space-y-6">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Pricing</h2>
 
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Price</Label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                    <Input
-                      value={formData.price}
-                      onChange={(e) => updateField("price", e.target.value)}
-                      className="pl-8"
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
-                    Original Price
-                  </Label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                    <Input
-                      value={formData.originalPrice}
-                      onChange={(e) => updateField("originalPrice", e.target.value)}
-                      className="pl-8"
-                      placeholder="0"
-                    />
-                  </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">
+                  Tax Excluded Price
+                </Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                  <Input value="2,500" className="pl-8" placeholder="0.00" />
                 </div>
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Discount (%)</Label>
-                <Input
-                  value={formData.discount}
-                  onChange={(e) => updateField("discount", e.target.value)}
-                  placeholder="0"
-                />
+                <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">
+                  Tax Included Price
+                </Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                  <Input value="0.00" className="pl-8" placeholder="0.00" />
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-sm font-medium text-gray-500 dark:text-gray-400">Tax Rule</Label>
+                  <Button variant="link" className="text-green-600 hover:text-green-700 p-0 h-auto text-sm">
+                    Create New Tax
+                  </Button>
+                </div>
+                <Select defaultValue="us-al">
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="us-al">US-AL Rate (4%)</SelectItem>
+                    <SelectItem value="us-ca">US-CA Rate (8.5%)</SelectItem>
+                    <SelectItem value="us-ny">US-NY Rate (8%)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Unit Price</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                    <Input value="0.00" className="pl-8" placeholder="0.00" />
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Per</Label>
+                  <div className="relative">
+                    <Input type="number" value="0" placeholder="0" />
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col">
+                      <Button variant="ghost" size="icon" className="w-4 h-3 p-0">
+                        <ChevronUp className="w-3 h-3" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="w-4 h-3 p-0">
+                        <ChevronDown className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </TabsContent>
 
@@ -353,35 +426,24 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
             <TabsContent value="inventory" className="mt-0 space-y-6">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Inventory</h2>
 
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
-                    Stock Quantity
-                  </Label>
-                  <Input
-                    type="number"
-                    value={formData.inventory.stock}
-                    onChange={(e) => updateNestedField("inventory", "stock", Number.parseInt(e.target.value))}
-                    placeholder="0"
-                  />
-                </div>
-                <div>
-                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">SKU</Label>
-                  <Input
-                    value={formData.inventory.sku}
-                    onChange={(e) => updateNestedField("inventory", "sku", e.target.value)}
-                    placeholder="Product SKU"
-                  />
-                </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">SKU</Label>
+                <Input value="0" placeholder="0" />
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Barcode</Label>
-                <Input
-                  value={formData.inventory.barcode}
-                  onChange={(e) => updateNestedField("inventory", "barcode", e.target.value)}
-                  placeholder="Product barcode"
-                />
+                <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Quantity</Label>
+                <div className="relative">
+                  <Input type="number" value="0" placeholder="0" />
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col">
+                    <Button variant="ghost" size="icon" className="w-4 h-3 p-0">
+                      <ChevronUp className="w-3 h-3" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="w-4 h-3 p-0">
+                      <ChevronDown className="w-3 h-3" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </TabsContent>
 
@@ -389,59 +451,35 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
             <TabsContent value="shipping" className="mt-0 space-y-6">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Shipping</h2>
 
-              <div>
-                <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Weight (kg)</Label>
-                <Input
-                  value={formData.shipping.weight}
-                  onChange={(e) => updateNestedField("shipping", "weight", e.target.value)}
-                  placeholder="0.0"
-                />
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Width</Label>
+                  <Input value="0cm" placeholder="0cm" />
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Height</Label>
+                  <Input value="0cm" placeholder="0cm" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Depth</Label>
+                  <Input value="0cm" placeholder="0cm" />
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Weight</Label>
+                  <Input value="0kg" placeholder="0kg" />
+                </div>
               </div>
 
               <div>
-                <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 block">
-                  Dimensions (cm)
+                <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">
+                  Extra Shipping Fee
                 </Label>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <Label className="text-xs text-gray-500 mb-1 block">Length</Label>
-                    <Input
-                      value={formData.shipping.dimensions.length}
-                      onChange={(e) =>
-                        updateNestedField("shipping", "dimensions", {
-                          ...formData.shipping.dimensions,
-                          length: e.target.value,
-                        })
-                      }
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500 mb-1 block">Width</Label>
-                    <Input
-                      value={formData.shipping.dimensions.width}
-                      onChange={(e) =>
-                        updateNestedField("shipping", "dimensions", {
-                          ...formData.shipping.dimensions,
-                          width: e.target.value,
-                        })
-                      }
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500 mb-1 block">Height</Label>
-                    <Input
-                      value={formData.shipping.dimensions.height}
-                      onChange={(e) =>
-                        updateNestedField("shipping", "dimensions", {
-                          ...formData.shipping.dimensions,
-                          height: e.target.value,
-                        })
-                      }
-                      placeholder="0"
-                    />
-                  </div>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                  <Input value="0.00" className="pl-8" placeholder="0.00" />
                 </div>
               </div>
             </TabsContent>
