@@ -64,32 +64,35 @@ const categories = [
 ]
 
 export function EditProductModal({ isOpen, onClose, product, onSave }: EditProductModalProps) {
-  const [formData, setFormData] = useState<Product>(
-    product || {
-      id: "",
-      name: "Apple iPhone 11 Pro Max 64GB Midnight Green",
-      description: "",
-      category: "phone",
-      price: "2500",
-      originalPrice: "2800",
-      discount: "15",
-      tags: ["Apple", "iPhone", "64GB"],
-      images: [],
-      inventory: {
-        stock: 50,
-        sku: "IPH11PM64MG",
-        barcode: "123456789012",
-      },
-      shipping: {
-        weight: "0.5",
-        dimensions: {
-          length: "15.8",
-          width: "7.7",
-          height: "0.8",
-        },
-      },
-    },
-  )
+  const [formData, setFormData] = useState({
+    // Basic info
+    id: product?.id || "",
+    name: product?.name || "Apple iPhone 11 Pro Max 64GB Midnight Green",
+    description: product?.description || "",
+    category: product?.category || "phone",
+    tags: product?.tags || ["Apple", "iPhone", "64GB"],
+
+    // Pricing
+    taxExcludedPrice: "2500",
+    taxIncludedPrice: "0.00",
+    taxRule: "us-al",
+    unitPrice: "0.00",
+    per: "0",
+
+    // Inventory
+    sku: "0",
+    quantity: "0",
+
+    // Shipping
+    width: "0",
+    height: "0",
+    depth: "0",
+    weight: "0",
+    extraShippingFee: "0.00",
+
+    // Images
+    images: product?.images || [],
+  })
 
   const [newTag, setNewTag] = useState("")
   const [activeTab, setActiveTab] = useState("information")
@@ -364,7 +367,12 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
                 </Label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                  <Input value="2,500" className="pl-8" placeholder="0.00" />
+                  <Input
+                    value={formData.taxExcludedPrice}
+                    onChange={(e) => updateField("taxExcludedPrice", e.target.value)}
+                    className="pl-8"
+                    placeholder="0.00"
+                  />
                 </div>
               </div>
 
@@ -374,7 +382,12 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
                 </Label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                  <Input value="0.00" className="pl-8" placeholder="0.00" />
+                  <Input
+                    value={formData.taxIncludedPrice}
+                    onChange={(e) => updateField("taxIncludedPrice", e.target.value)}
+                    className="pl-8"
+                    placeholder="0.00"
+                  />
                 </div>
               </div>
 
@@ -385,7 +398,7 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
                     Create New Tax
                   </Button>
                 </div>
-                <Select defaultValue="us-al">
+                <Select value={formData.taxRule} onValueChange={(value) => updateField("taxRule", value)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -402,18 +415,38 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
                   <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Unit Price</Label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                    <Input value="0.00" className="pl-8" placeholder="0.00" />
+                    <Input
+                      value={formData.unitPrice}
+                      onChange={(e) => updateField("unitPrice", e.target.value)}
+                      className="pl-8"
+                      placeholder="0.00"
+                    />
                   </div>
                 </div>
                 <div>
                   <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Per</Label>
                   <div className="relative">
-                    <Input type="number" value="0" placeholder="0" />
+                    <Input
+                      type="number"
+                      value={formData.per}
+                      onChange={(e) => updateField("per", e.target.value)}
+                      placeholder="0"
+                    />
                     <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col">
-                      <Button variant="ghost" size="icon" className="w-4 h-3 p-0">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-4 h-3 p-0"
+                        onClick={() => updateField("per", String(Number.parseInt(formData.per) + 1))}
+                      >
                         <ChevronUp className="w-3 h-3" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="w-4 h-3 p-0">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-4 h-3 p-0"
+                        onClick={() => updateField("per", String(Math.max(0, Number.parseInt(formData.per) - 1)))}
+                      >
                         <ChevronDown className="w-3 h-3" />
                       </Button>
                     </div>
@@ -428,18 +461,35 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
 
               <div>
                 <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">SKU</Label>
-                <Input value="0" placeholder="0" />
+                <Input value={formData.sku} onChange={(e) => updateField("sku", e.target.value)} placeholder="0" />
               </div>
 
               <div>
                 <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Quantity</Label>
                 <div className="relative">
-                  <Input type="number" value="0" placeholder="0" />
+                  <Input
+                    type="number"
+                    value={formData.quantity}
+                    onChange={(e) => updateField("quantity", e.target.value)}
+                    placeholder="0"
+                  />
                   <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col">
-                    <Button variant="ghost" size="icon" className="w-4 h-3 p-0">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="w-4 h-3 p-0"
+                      onClick={() => updateField("quantity", String(Number.parseInt(formData.quantity) + 1))}
+                    >
                       <ChevronUp className="w-3 h-3" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="w-4 h-3 p-0">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="w-4 h-3 p-0"
+                      onClick={() =>
+                        updateField("quantity", String(Math.max(0, Number.parseInt(formData.quantity) - 1)))
+                      }
+                    >
                       <ChevronDown className="w-3 h-3" />
                     </Button>
                   </div>
@@ -454,22 +504,38 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Width</Label>
-                  <Input value="0cm" placeholder="0cm" />
+                  <Input
+                    value={formData.width}
+                    onChange={(e) => updateField("width", e.target.value)}
+                    placeholder="0cm"
+                  />
                 </div>
                 <div>
                   <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Height</Label>
-                  <Input value="0cm" placeholder="0cm" />
+                  <Input
+                    value={formData.height}
+                    onChange={(e) => updateField("height", e.target.value)}
+                    placeholder="0cm"
+                  />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Depth</Label>
-                  <Input value="0cm" placeholder="0cm" />
+                  <Input
+                    value={formData.depth}
+                    onChange={(e) => updateField("depth", e.target.value)}
+                    placeholder="0cm"
+                  />
                 </div>
                 <div>
                   <Label className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 block">Weight</Label>
-                  <Input value="0kg" placeholder="0kg" />
+                  <Input
+                    value={formData.weight}
+                    onChange={(e) => updateField("weight", e.target.value)}
+                    placeholder="0kg"
+                  />
                 </div>
               </div>
 
@@ -479,7 +545,12 @@ export function EditProductModal({ isOpen, onClose, product, onSave }: EditProdu
                 </Label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                  <Input value="0.00" className="pl-8" placeholder="0.00" />
+                  <Input
+                    value={formData.extraShippingFee}
+                    onChange={(e) => updateField("extraShippingFee", e.target.value)}
+                    className="pl-8"
+                    placeholder="0.00"
+                  />
                 </div>
               </div>
             </TabsContent>
