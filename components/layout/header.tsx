@@ -8,9 +8,11 @@ import Link from "next/link"
 interface HeaderProps {
   title?: string
   onThemeSettingsOpen?: () => void
+  onSidebarToggle?: () => void
+  isSidebarOpen?: boolean
 }
 
-export function Header({ title = "Dashboard #1", onThemeSettingsOpen }: HeaderProps) {
+export function Header({ title = "Dashboard #1", onThemeSettingsOpen, onSidebarToggle, isSidebarOpen }: HeaderProps) {
   return (
     <header className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-6 py-4 transition-colors duration-300">
       <div className="flex items-center justify-between">
@@ -18,7 +20,11 @@ export function Header({ title = "Dashboard #1", onThemeSettingsOpen }: HeaderPr
           <Button
             variant="ghost"
             size="icon"
-            className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
+            onClick={onSidebarToggle}
+            className={`dark:text-gray-300 dark:hover:bg-gray-700 transition-all duration-200 ${
+              isSidebarOpen ? "text-green-600 dark:text-green-400" : ""
+            }`}
+            title={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
           >
             <Menu className="w-5 h-5" />
           </Button>
