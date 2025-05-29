@@ -15,18 +15,20 @@ import { TransactionsList } from "@/components/dashboard/transactions-list"
 import { OrdersTable } from "@/components/dashboard/orders-table"
 import ThemeSettingsPanel from "@/components/theme-settings-panel"
 import { useThemeSettings } from "@/hooks/use-theme-settings"
+import { useSidebar } from "@/hooks/use-sidebar"
 
 export default function Dashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState("Last 7 days")
   const { showThemeSettings, currentTheme, openThemeSettings, closeThemeSettings, handleThemeChange } =
     useThemeSettings()
+  const { isOpen: isSidebarOpen, isMobile, toggle: toggleSidebar, close: closeSidebar } = useSidebar()
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <Sidebar />
+      <Sidebar isOpen={isSidebarOpen} isMobile={isMobile} onClose={closeSidebar} />
 
-      <div className="flex-1 flex flex-col">
-        <Header onThemeSettingsOpen={openThemeSettings} />
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${!isMobile && !isSidebarOpen ? "ml-0" : ""}`}>
+        <Header onThemeSettingsOpen={openThemeSettings} onSidebarToggle={toggleSidebar} isSidebarOpen={isSidebarOpen} />
 
         <main className="flex-1 p-6 overflow-auto bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
           <div className="flex items-center justify-between mb-6">
