@@ -14,16 +14,16 @@ import {
 import { Badge } from "@/components/ui/badge"
 
 const sidebarItems = [
-  { icon: Home, label: "Dashboard", active: true, badge: null },
-  { icon: CheckSquare, label: "Task", active: false, badge: null },
-  { icon: ShoppingCart, label: "E-Commerce", active: false, badge: null },
-  { icon: Calendar, label: "Calendar", active: false, badge: null },
-  { icon: Mail, label: "Mail", active: false, badge: "1" },
-  { icon: MessageCircle, label: "Chat", active: false, badge: null },
-  { icon: FolderOpen, label: "Projects", active: false, badge: null },
-  { icon: FileText, label: "File Manager", active: false, badge: null },
-  { icon: FileText, label: "Notes", active: false, badge: null },
-  { icon: Users, label: "Contacts", active: false, badge: null },
+  { icon: Home, label: "Dashboard", active: false, badge: null, href: "/" },
+  { icon: CheckSquare, label: "Task", active: true, badge: null, href: "/tasks" },
+  { icon: ShoppingCart, label: "E-Commerce", active: false, badge: null, href: "/ecommerce" },
+  { icon: Calendar, label: "Calendar", active: false, badge: null, href: "/calendar" },
+  { icon: Mail, label: "Mail", active: false, badge: "1", href: "/mail" },
+  { icon: MessageCircle, label: "Chat", active: false, badge: null, href: "/chat" },
+  { icon: FolderOpen, label: "Projects", active: false, badge: null, href: "/projects" },
+  { icon: FileText, label: "File Manager", active: false, badge: null, href: "/files" },
+  { icon: FileText, label: "Notes", active: false, badge: null, href: "/notes" },
+  { icon: Users, label: "Contacts", active: false, badge: null, href: "/contacts" },
 ]
 
 interface SidebarNavigationProps {
