@@ -18,6 +18,7 @@ import {
   Phone,
   Mail,
   Cake,
+  Edit,
 } from "lucide-react"
 import ThemeSettingsPanel from "@/components/theme-settings-panel"
 import { useTheme } from "next-themes"
@@ -37,6 +38,7 @@ export default function ProfilePage() {
       change: "+4.85%",
       trend: "up",
       icon: TrendingUp,
+      color: "text-green-500",
     },
     {
       title: "Total Followers",
@@ -44,6 +46,7 @@ export default function ProfilePage() {
       change: "+5.25%",
       trend: "down",
       icon: TrendingDown,
+      color: "text-red-500",
     },
     {
       title: "Total Likes",
@@ -51,6 +54,7 @@ export default function ProfilePage() {
       change: "+3.55%",
       trend: "up",
       icon: TrendingUp,
+      color: "text-green-500",
     },
     {
       title: "Total Comments",
@@ -58,6 +62,7 @@ export default function ProfilePage() {
       change: "+10.30%",
       trend: "up",
       icon: TrendingUp,
+      color: "text-green-500",
     },
   ]
 
@@ -78,11 +83,23 @@ export default function ProfilePage() {
   ]
 
   const socialPlatforms = [
-    { name: "Facebook", followers: "3.5k", color: "bg-blue-500" },
-    { name: "Twitter", followers: "7.8k", color: "bg-sky-400" },
-    { name: "Instagram", followers: "5.8k", color: "bg-pink-500" },
-    { name: "YouTube", followers: "4.7k", color: "bg-red-500" },
+    { name: "Facebook", followers: "3.5k", color: "bg-blue-500", percentage: 25 },
+    { name: "Twitter", followers: "7.8k", color: "bg-sky-400", percentage: 35 },
+    { name: "Instagram", followers: "5.8k", color: "bg-pink-500", percentage: 27 },
+    { name: "YouTube", followers: "4.7k", color: "bg-red-500", percentage: 13 },
   ]
+
+  const visitData = [
+    { day: "Mon", value: 2800 },
+    { day: "Tue", value: 1900 },
+    { day: "Wed", value: 4200 },
+    { day: "Thu", value: 2100 },
+    { day: "Fri", value: 4800 },
+    { day: "Sat", value: 3100 },
+    { day: "Sun", value: 3800 },
+  ]
+
+  const followerGrowthData = [1200, 800, 4200, 1800, 3200, 5800, 2400]
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
@@ -90,46 +107,54 @@ export default function ProfilePage() {
       <div className="w-80 bg-white dark:bg-gray-800 shadow-sm border-r dark:border-gray-700 transition-colors duration-300">
         <div className="p-6">
           {/* Profile Section */}
-          <div className="text-center mb-6">
-            <Avatar className="w-32 h-32 mx-auto mb-4">
-              <AvatarImage src="/placeholder.svg?height=128&width=128" />
-              <AvatarFallback className="bg-orange-500 text-white text-2xl">FB</AvatarFallback>
-            </Avatar>
+          <div className="text-center mb-8">
+            <div className="relative inline-block mb-4">
+              <Avatar className="w-32 h-32 mx-auto">
+                <AvatarImage src="/placeholder.svg?height=128&width=128" />
+                <AvatarFallback className="bg-orange-500 text-white text-2xl">FB</AvatarFallback>
+              </Avatar>
+              <Button
+                size="icon"
+                className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-green-600 hover:bg-green-700 text-white shadow-lg"
+              >
+                <Edit className="w-4 h-4" />
+              </Button>
+            </div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">Felecia Brown</h2>
             <p className="text-gray-500 dark:text-gray-400 mb-4">Project Manager</p>
-            <Button className="bg-green-600 hover:bg-green-700 text-white">Edit profile</Button>
+            <Button className="bg-green-600 hover:bg-green-700 text-white px-6">Edit profile</Button>
           </div>
 
           {/* Info Section */}
-          <div className="mb-6">
+          <div className="mb-8">
             <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-4 uppercase tracking-wider">INFO</h3>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 text-sm">
-                <Mail className="w-4 h-4 text-gray-400" />
-                <div>
-                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase">EMAIL</p>
-                  <p className="text-gray-900 dark:text-white">example@mail.com</p>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Mail className="w-4 h-4 text-gray-400 mt-1" />
+                <div className="flex-1">
+                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider mb-1">EMAIL</p>
+                  <p className="text-gray-900 dark:text-white text-sm">example@mail.com</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Phone className="w-4 h-4 text-gray-400" />
-                <div>
-                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase">PHONE</p>
-                  <p className="text-gray-900 dark:text-white">+123-4567-8800</p>
+              <div className="flex items-start gap-3">
+                <Phone className="w-4 h-4 text-gray-400 mt-1" />
+                <div className="flex-1">
+                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider mb-1">PHONE</p>
+                  <p className="text-gray-900 dark:text-white text-sm">+123-4567-8800</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Cake className="w-4 h-4 text-gray-400" />
-                <div>
-                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase">BIRTHDAY</p>
-                  <p className="text-gray-900 dark:text-white">17 March, 1995</p>
+              <div className="flex items-start gap-3">
+                <Cake className="w-4 h-4 text-gray-400 mt-1" />
+                <div className="flex-1">
+                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider mb-1">BIRTHDAY</p>
+                  <p className="text-gray-900 dark:text-white text-sm">17 March, 1995</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-sm">
-                <MapPin className="w-4 h-4 text-gray-400" />
-                <div>
-                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase">LOCATION</p>
-                  <p className="text-gray-900 dark:text-white">New York, NY</p>
+              <div className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-gray-400 mt-1" />
+                <div className="flex-1">
+                  <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider mb-1">LOCATION</p>
+                  <p className="text-gray-900 dark:text-white text-sm">New York, NY</p>
                 </div>
               </div>
             </div>
@@ -142,7 +167,10 @@ export default function ProfilePage() {
             </h3>
             <div className="space-y-3">
               {favorites.map((person, index) => (
-                <div key={index} className="flex items-center gap-3">
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+                >
                   <Avatar className="w-8 h-8">
                     <AvatarFallback className="bg-orange-500 text-white text-xs">{person.avatar}</AvatarFallback>
                   </Avatar>
@@ -162,15 +190,15 @@ export default function ProfilePage() {
         {/* Header */}
         <header className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-6 py-4 transition-colors duration-300">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-8">
               {tabs.map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`text-sm font-medium transition-colors ${
+                  className={`text-sm font-medium transition-colors pb-4 border-b-2 ${
                     activeTab === tab
-                      ? "text-green-600 dark:text-green-400 border-b-2 border-green-600 dark:border-green-400 pb-4"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                      ? "text-green-600 dark:text-green-400 border-green-600 dark:border-green-400"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 border-transparent"
                   }`}
                 >
                   {tab}
@@ -209,10 +237,13 @@ export default function ProfilePage() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="dark:bg-gray-800 dark:border-gray-700">
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
-                    Profile
+                    Account Settings
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
-                    Settings
+                  <DropdownMenuItem
+                    onClick={() => setShowThemeSettings(true)}
+                    className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
+                  >
+                    Theme Settings
                   </DropdownMenuItem>
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
                     Logout
@@ -266,19 +297,18 @@ export default function ProfilePage() {
           {/* Metrics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             {metrics.map((metric, index) => (
-              <Card key={index} className="dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
+              <Card
+                key={index}
+                className="dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300 hover:shadow-lg"
+              >
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{metric.title}</p>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">{metric.value}</p>
-                      <div className="flex items-center gap-1 mt-1">
-                        <metric.icon
-                          className={`w-4 h-4 ${metric.trend === "up" ? "text-green-500" : "text-red-500"}`}
-                        />
-                        <span className={`text-sm ${metric.trend === "up" ? "text-green-500" : "text-red-500"}`}>
-                          {metric.change}
-                        </span>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{metric.title}</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{metric.value}</p>
+                      <div className="flex items-center gap-1">
+                        <metric.icon className={`w-4 h-4 ${metric.color}`} />
+                        <span className={`text-sm font-medium ${metric.color}`}>{metric.change}</span>
                       </div>
                     </div>
                     <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-lg flex items-center justify-center">
@@ -332,24 +362,29 @@ export default function ProfilePage() {
                       </linearGradient>
                     </defs>
                     <path
-                      d="M 40 100 L 80 80 L 120 90 L 160 70 L 200 85 L 240 75 L 280 65 L 320 80 L 360 70"
+                      d="M 40 100 L 80 80 L 120 90 L 160 70 L 200 85 L 240 75 L 280 65"
                       stroke="#10b981"
-                      strokeWidth="2"
+                      strokeWidth="3"
                       fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
-                      d="M 40 100 L 80 80 L 120 90 L 160 70 L 200 85 L 240 75 L 280 65 L 320 80 L 360 70 L 360 150 L 40 150 Z"
+                      d="M 40 100 L 80 80 L 120 90 L 160 70 L 200 85 L 240 75 L 280 65 L 280 150 L 40 150 Z"
                       fill="url(#visitGradient)"
                     />
-                    {[40, 80, 120, 160, 200, 240, 280, 320, 360].map((x, i) => (
-                      <circle key={i} cx={x} cy={[100, 80, 90, 70, 85, 75, 65, 80, 70][i]} r="3" fill="#10b981" />
+                    {[40, 80, 120, 160, 200, 240, 280].map((x, i) => (
+                      <circle key={i} cx={x} cy={[100, 80, 90, 70, 85, 75, 65][i]} r="4" fill="#10b981" />
                     ))}
                   </svg>
                   <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-500 dark:text-gray-400 px-8">
-                    {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
-                      <span key={day}>{day}</span>
+                    {visitData.map((item) => (
+                      <span key={item.day}>{item.day}</span>
                     ))}
                   </div>
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Visitors: 3,100 • 21 August, 2019</p>
                 </div>
               </CardContent>
             </Card>
@@ -374,22 +409,34 @@ export default function ProfilePage() {
                         cx="50"
                         cy="50"
                         r="40"
-                        stroke="#374151"
+                        stroke="#e5e7eb"
                         strokeWidth="8"
                         fill="none"
                         className="dark:stroke-gray-600"
                       />
-                      <circle
-                        cx="50"
-                        cy="50"
-                        r="40"
-                        stroke="#10b981"
-                        strokeWidth="8"
-                        fill="none"
-                        strokeDasharray="251.2"
-                        strokeDashoffset="62.8"
-                        strokeLinecap="round"
-                      />
+                      {socialPlatforms.map((platform, index) => {
+                        const prevPercentage = socialPlatforms.slice(0, index).reduce((sum, p) => sum + p.percentage, 0)
+                        const circumference = 2 * Math.PI * 40
+                        const strokeDasharray = circumference
+                        const strokeDashoffset = circumference - (circumference * platform.percentage) / 100
+                        const rotation = (prevPercentage * 360) / 100
+
+                        return (
+                          <circle
+                            key={platform.name}
+                            cx="50"
+                            cy="50"
+                            r="40"
+                            stroke={platform.color.replace("bg-", "#")}
+                            strokeWidth="8"
+                            fill="none"
+                            strokeDasharray={strokeDasharray}
+                            strokeDashoffset={strokeDashoffset}
+                            strokeLinecap="round"
+                            style={{ transform: `rotate(${rotation}deg)`, transformOrigin: "50% 50%" }}
+                          />
+                        )
+                      })}
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                       <span className="text-2xl font-bold text-gray-900 dark:text-white">21,800</span>
@@ -442,14 +489,25 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 <div className="h-48 flex items-end justify-between gap-2">
-                  {[60, 40, 85, 45, 70, 95, 50].map((height, index) => (
-                    <div key={index} className="flex flex-col items-center gap-2 flex-1">
-                      <div className="w-full bg-green-500 rounded-t" style={{ height: `${height}%` }}></div>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index]}
-                      </span>
-                    </div>
-                  ))}
+                  {followerGrowthData.map((value, index) => {
+                    const maxValue = Math.max(...followerGrowthData)
+                    const height = (value / maxValue) * 100
+                    return (
+                      <div key={index} className="flex flex-col items-center gap-2 flex-1">
+                        <div
+                          className="w-full bg-green-500 rounded-t transition-all duration-300 hover:bg-green-600"
+                          style={{ height: `${height}%` }}
+                          title={`${value} followers`}
+                        ></div>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index]}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Peak day: Friday with 5,800 new followers</p>
                 </div>
               </CardContent>
             </Card>
@@ -467,9 +525,12 @@ export default function ProfilePage() {
               <CardContent>
                 <div className="space-y-4">
                   {newFollowers.map((follower, index) => (
-                    <div key={index} className="flex items-center justify-between">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    >
                       <div className="flex items-center gap-3">
-                        <Avatar className="w-8 h-8">
+                        <Avatar className="w-10 h-10">
                           <AvatarFallback className="bg-orange-500 text-white text-xs">
                             {follower.avatar}
                           </AvatarFallback>
@@ -480,17 +541,13 @@ export default function ProfilePage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="text-green-600 border-green-600 hover:bg-green-50 dark:text-green-400 dark:border-green-400 dark:hover:bg-green-900/20"
-                        >
+                        <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white px-4">
                           Follow
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="w-6 h-6 dark:text-gray-300 dark:hover:bg-gray-700"
+                          className="w-8 h-8 dark:text-gray-300 dark:hover:bg-gray-600"
                         >
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
@@ -510,7 +567,6 @@ export default function ProfilePage() {
           onClose={() => setShowThemeSettings(false)}
           currentTheme={theme || "light"}
           onThemeChange={(newTheme) => {
-            console.log("Changing theme to:", newTheme)
             setTheme(newTheme)
           }}
         />
