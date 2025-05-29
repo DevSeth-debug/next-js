@@ -12,6 +12,7 @@ import { ProductsTable } from "@/components/ecommerce/products-table"
 import { Pagination } from "@/components/ecommerce/pagination"
 import { AdvancedFilters } from "@/components/ecommerce/advanced-filters"
 import { ProductsGrid } from "@/components/ecommerce/products-grid"
+import { AddProductForm } from "@/components/ecommerce/add-product-form"
 
 const tabs = [
   { id: "all", label: "All", count: 283, active: true },
@@ -26,6 +27,7 @@ export default function EcommercePage() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [viewMode, setViewMode] = useState<"list" | "grid">("list")
   const [showFilters, setShowFilters] = useState(false)
+  const [showAddProduct, setShowAddProduct] = useState(false)
   const [filters, setFilters] = useState({
     category: "all",
     status: "all",
@@ -36,6 +38,11 @@ export default function EcommercePage() {
 
   const totalItems = 100
   const totalPages = Math.ceil(totalItems / itemsPerPage)
+
+  const handleAddProduct = (productData: any) => {
+    console.log("Adding product:", productData)
+    // Here you would typically send the data to your API
+  }
 
   return (
     <AppShell>
@@ -48,7 +55,11 @@ export default function EcommercePage() {
               <Download className="w-4 h-4" />
               Export
             </Button>
-            <Button size="sm" className="flex items-center gap-2 bg-green-600 hover:bg-green-700">
+            <Button
+              size="sm"
+              className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
+              onClick={() => setShowAddProduct(true)}
+            >
               <Plus className="w-4 h-4" />
               Add
             </Button>
@@ -156,6 +167,9 @@ export default function EcommercePage() {
           onFiltersChange={setFilters}
           onSave={() => setShowFilters(false)}
         />
+
+        {/* Add Product Form */}
+        <AddProductForm isOpen={showAddProduct} onClose={() => setShowAddProduct(false)} onSave={handleAddProduct} />
       </div>
     </AppShell>
   )
