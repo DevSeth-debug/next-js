@@ -10,6 +10,7 @@ import { Search, Download, Plus, Filter, MoreHorizontal, List, Grid } from "luci
 import { AppShell } from "@/components/layout/app-shell"
 import { ProductsTable } from "@/components/ecommerce/products-table"
 import { Pagination } from "@/components/ecommerce/pagination"
+import { AdvancedFilters } from "@/components/ecommerce/advanced-filters"
 
 const tabs = [
   { id: "all", label: "All", count: 283, active: true },
@@ -23,6 +24,14 @@ export default function EcommercePage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [viewMode, setViewMode] = useState<"list" | "grid">("list")
+  const [showFilters, setShowFilters] = useState(false)
+  const [filters, setFilters] = useState({
+    category: "all",
+    status: "all",
+    dateFrom: undefined,
+    dateTo: undefined,
+    priceRange: [500, 5500] as [number, number],
+  })
 
   const totalItems = 100
   const totalPages = Math.ceil(totalItems / itemsPerPage)
@@ -99,7 +108,12 @@ export default function EcommercePage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+              onClick={() => setShowFilters(true)}
+            >
               <Filter className="w-4 h-4" />
               Filter
             </Button>
@@ -131,6 +145,15 @@ export default function EcommercePage() {
           itemsPerPage={itemsPerPage}
           onPageChange={setCurrentPage}
           onItemsPerPageChange={setItemsPerPage}
+        />
+
+        {/* Advanced Filters Panel */}
+        <AdvancedFilters
+          isOpen={showFilters}
+          onClose={() => setShowFilters(false)}
+          filters={filters}
+          onFiltersChange={setFilters}
+          onSave={() => setShowFilters(false)}
         />
       </div>
     </AppShell>
