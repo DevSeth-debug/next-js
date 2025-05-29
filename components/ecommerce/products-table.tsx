@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, ChevronUp, ChevronDown } from "lucide-react"
+import { EditProductModal } from "./edit-product-modal"
 
 interface Product {
   id: string
@@ -109,6 +110,8 @@ export function ProductsTable({ products = mockProducts }: ProductsTableProps) {
   const [selectedProducts, setSelectedProducts] = useState<string[]>(
     products.filter((p) => p.selected).map((p) => p.id),
   )
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [showEditModal, setShowEditModal] = useState(false)
 
   const handleSort = (field: string) => {
     if (sortField === field) {
@@ -133,6 +136,16 @@ export function ProductsTable({ products = mockProducts }: ProductsTableProps) {
     }
   }
 
+  const handleEditProduct = (product: Product) => {
+    setEditingProduct(product)
+    setShowEditModal(true)
+  }
+
+  const handleSaveProduct = (productData: any) => {
+    console.log("Saving product:", productData)
+    // Here you would typically send the data to your API
+  }
+
   const SortButton = ({ field, children }: { field: string; children: React.ReactNode }) => (
     <Button variant="ghost" className="h-auto p-0 font-medium" onClick={() => handleSort(field)}>
       <span className="flex items-center gap-1">
@@ -147,85 +160,95 @@ export function ProductsTable({ products = mockProducts }: ProductsTableProps) {
   )
 
   return (
-    <div className="border rounded-lg">
-      <Table>
-        <TableHeader>
-          <TableRow className="border-b">
-            <TableHead className="w-12">
-              <Checkbox
-                checked={selectedProducts.length === products.length}
-                onCheckedChange={handleSelectAll}
-                aria-label="Select all products"
-              />
-            </TableHead>
-            <TableHead>
-              <SortButton field="name">PRODUCT NAME</SortButton>
-            </TableHead>
-            <TableHead>
-              <SortButton field="productNo">PRODUCT NO.</SortButton>
-            </TableHead>
-            <TableHead>
-              <SortButton field="category">CATEGORY</SortButton>
-            </TableHead>
-            <TableHead>
-              <SortButton field="date">DATE</SortButton>
-            </TableHead>
-            <TableHead>
-              <SortButton field="price">PRICE</SortButton>
-            </TableHead>
-            <TableHead>
-              <SortButton field="status">STATUS</SortButton>
-            </TableHead>
-            <TableHead className="w-12"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {products.map((product) => (
-            <TableRow key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-              <TableCell>
+    <>
+      <div className="border rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow className="border-b">
+              <TableHead className="w-12">
                 <Checkbox
-                  checked={selectedProducts.includes(product.id)}
-                  onCheckedChange={() => handleSelectProduct(product.id)}
-                  aria-label={`Select ${product.name}`}
+                  checked={selectedProducts.length === products.length}
+                  onCheckedChange={handleSelectAll}
+                  aria-label="Select all products"
                 />
-              </TableCell>
-              <TableCell className="font-medium">{product.name}</TableCell>
-              <TableCell className="text-gray-500">{product.productNo}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell className="text-gray-500">{product.date}</TableCell>
-              <TableCell className="font-medium">{product.price}</TableCell>
-              <TableCell>
-                <Badge
-                  variant={product.status === "Available" ? "default" : "secondary"}
-                  className={
-                    product.status === "Available"
-                      ? "bg-green-100 text-green-800 hover:bg-green-100"
-                      : "bg-orange-100 text-orange-800 hover:bg-orange-100"
-                  }
-                >
-                  {product.status}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="w-8 h-8">
-                      <MoreHorizontal className="w-4 h-4" />
-                      <span className="sr-only">Open menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                    <DropdownMenuItem>Archive</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+              </TableHead>
+              <TableHead>
+                <SortButton field="name">PRODUCT NAME</SortButton>
+              </TableHead>
+              <TableHead>
+                <SortButton field="productNo">PRODUCT NO.</SortButton>
+              </TableHead>
+              <TableHead>
+                <SortButton field="category">CATEGORY</SortButton>
+              </TableHead>
+              <TableHead>
+                <SortButton field="date">DATE</SortButton>
+              </TableHead>
+              <TableHead>
+                <SortButton field="price">PRICE</SortButton>
+              </TableHead>
+              <TableHead>
+                <SortButton field="status">STATUS</SortButton>
+              </TableHead>
+              <TableHead className="w-12"></TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {products.map((product) => (
+              <TableRow key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                <TableCell>
+                  <Checkbox
+                    checked={selectedProducts.includes(product.id)}
+                    onCheckedChange={() => handleSelectProduct(product.id)}
+                    aria-label={`Select ${product.name}`}
+                  />
+                </TableCell>
+                <TableCell className="font-medium">{product.name}</TableCell>
+                <TableCell className="text-gray-500">{product.productNo}</TableCell>
+                <TableCell>{product.category}</TableCell>
+                <TableCell className="text-gray-500">{product.date}</TableCell>
+                <TableCell className="font-medium">{product.price}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant={product.status === "Available" ? "default" : "secondary"}
+                    className={
+                      product.status === "Available"
+                        ? "bg-green-100 text-green-800 hover:bg-green-100"
+                        : "bg-orange-100 text-orange-800 hover:bg-orange-100"
+                    }
+                  >
+                    {product.status}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="w-8 h-8">
+                        <MoreHorizontal className="w-4 h-4" />
+                        <span className="sr-only">Open menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleEditProduct(product)}>Edit</DropdownMenuItem>
+                      <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                      <DropdownMenuItem>Archive</DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Edit Product Modal */}
+      <EditProductModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        product={editingProduct}
+        onSave={handleSaveProduct}
+      />
+    </>
   )
 }
