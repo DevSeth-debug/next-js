@@ -79,7 +79,7 @@ export function Header({ onThemeSettingsOpen, onSidebarToggle, isSidebarOpen }: 
                 Settings
               </DropdownMenuItem>
               <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
-                Logout
+                <Link href="/auth/signout">Logout</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

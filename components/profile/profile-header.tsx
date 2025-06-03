@@ -3,7 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Search, Bell, ChevronDown, Menu } from "lucide-react"
+import { signOut } from "@/auth"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 interface ProfileHeaderProps {
   activeTab: string
@@ -94,7 +96,7 @@ export function ProfileHeader({
                 <ChevronDown className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="dark:bg-gray-800 dark:border-gray-700">
+            <DropdownMenuContent align="end" className="dark:bg-gray-800 dark:border-gray-700">
               <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
                 Account Settings
               </DropdownMenuItem>
@@ -104,7 +106,10 @@ export function ProfileHeader({
               >
                 Theme Settings
               </DropdownMenuItem>
-              <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200">
+              <DropdownMenuItem 
+            
+                className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
+              >
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
